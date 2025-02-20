@@ -53,9 +53,13 @@ Resume Parser AI bertujuan untuk mengekstrak informasi penting dari dokumen CV/r
 
 **Use Case Diagram**:
 
+![Use Case Diagram](assets/UseCase.png)
+
 **Functional Requirements**:
 
 **Entity Relationship Diagram**:
+
+![Entity Relationship Diagram](assets/erd.png)
 
 **Low-Fidelity Wireframe**:
 
