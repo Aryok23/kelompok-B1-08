@@ -29,3 +29,36 @@ Bagaimana cara mengembangkan sistem resume parser berbasis AI yang dapat memaham
 **Analisis Kompetitor**:  
 Resume Parser AI bersaing dengan beberapa platform rekrutmen berbasis AI seperti Resume.io, Parseur, dan HireEZ. Resume.io unggul dalam pembuatan resume ATS-friendly namun kurang dalam fitur parsing otomatis untuk HR. Parseur menawarkan parsing CV otomatis dengan integrasi API yang kuat, tetapi tidak menyediakan fitur filtering kandidat secara langsung. Sementara itu, HireEZ menggunakan AI untuk mencari, menganalisis, dan merekomendasikan kandidat, tetapi lebih cocok untuk perusahaan besar dengan biaya yang tidak terjangkau bagi individu atau startup. Keunggulan utama Resume Parser AI adalah kombinasi parsing AI dengan filtering otomatis berbasis konteks keterampilan dan pengalaman, menjadikannya solusi yang lebih komprehensif dan efisien bagi HR di berbagai skala bisnis.
 
+## Metodologi SDLC  
+**Metodologi SDLC**:
+Agile dengan pendekatan Scrum
+
+**Alasan Pemilihan Metodologi**:
+- Agile memungkinkan pengembangan perangkat lunak secara iteratif, sehingga tim dapat beradaptasi dengan perubahan kebutuhan pengguna.
+- Dengan pertemuan rutin seperti sprint planning dan daily stand-up meetings, koordinasi antar anggota tim lebih efektif.
+- Pengujian dilakukan secara berulang pada setiap iterasi, mengurangi kemungkinan kesalahan besar di akhir proyek.
+
+
+## Perancangan Tahap 1-3 SDLC
+**Tujuan dari Produk**:
+Resume Parser AI bertujuan untuk mengekstrak informasi penting dari dokumen CV/resume secara otomatis dan mengubahnya menjadi format terstruktur untuk mempermudah proses rekrutmen.
+
+**Pengguna potensial**:
+- Perusahaan Rekrutmen
+  Mempermudah penyaringan kandidat secara otomatis berdasarkan informasi yang relevan.
+- HR dari Perusahaan
+  Menghemat waktu dalam memilah kandidat yang sesuai dengan kebutuhan perusahaan.
+- Pelamar Kerja
+  Memastikan CV mereka diinterpretasikan dengan baik oleh sistem.
+
+**Use Case Diagram**:
+
+**Functional Requirements**:
+
+**Entity Relationship Diagram**:
+
+**Low-Fidelity Wireframe**:
+
+**Gantt-Chart**:
+![Gantt-Chart pengerjaan proyek dalam kurun waktu 1 semester](assets/gantt-chart.png)
+
