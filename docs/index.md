@@ -11,12 +11,13 @@ Departemen Teknologi Elektro dan Teknologi Informasi, Fakultas Teknik, Universit
 
 ## Tentang Proyek  
 **Nama Produk**: Resume Parser AI
+
 **Jenis Produk**: Web App
 
-**Latar Belakang**: 
+**Latar Belakang**:  
 Proses rekrutmen pekerjaan seringkali diawali dengan proses peninjauan resume kandidat. Dalam proses ini, recuiters melakukan pekerjaan yang repetitif karena harus meninjau ratusan hingga ribuan resume dan menghabiskan banyak waktu untuk menemukan kandidat untuk suatu posisi pekerjaan. Beberapa perusahaan telah mengotomatisasi proses tersebut dengan metode pencocokan keyword. Namun, metode ini kurang memahami konteks dari keyword yang digunakan dalam resume karena hanya mencocokkan keyword tanpa menganalisis keterampilan atau pengalaman kandidat. Oleh karena itu, recuiters membutuhkan sistem yang dapat menyaring kandidat berdasarkan relevansi atau kesesuaian deskripsi pekerjaan dari recuiters dengan mengelompokkan keterampilan dan pengalaman kandidat berdasarkan kesamaan konteks.
 
-**Permasalahan**: 
+**Permasalahan**:  
 Bagaimana cara mengembangkan sistem resume parser berbasis AI yang dapat memahami konteks keterampilan dan pengalaman kandidat serta dapat diakses semua orang?
 
 **Ide Solusi**:  
