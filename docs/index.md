@@ -58,6 +58,7 @@ Resume Parser AI bertujuan untuk mengekstrak informasi penting dari dokumen CV/r
 **Entity Relationship Diagram**:
 
 **Low-Fidelity Wireframe**:
+
 Landing - Desktop
 ![Landing - Desktop](assets/Landing-Desktop.png)
 
