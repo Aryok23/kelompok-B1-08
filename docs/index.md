@@ -58,6 +58,20 @@ Resume Parser AI bertujuan untuk mengekstrak informasi penting dari dokumen CV/r
 **Entity Relationship Diagram**:
 
 **Low-Fidelity Wireframe**:
+Landing - Desktop
+![Landing - Desktop](assets/Landing-Desktop.png)
+
+Sign Up - Desktop
+![Sign Up - Desktop](assets/SignUp-Desktop.png)
+
+Login - Desktop
+![Login - Desktop](assets/Login-Desktop.png)
+
+Dashboard HRD - Desktop
+![Dashboard HRD - Desktop](assets/DashboardHRD-Desktop.png)
+
+Dashboard Job Seeker - Desktop
+![Dashboard Job Seeker - Desktop](assets/DashboardJobSeeker-Desktop.png)
 
 **Gantt-Chart**:
 ![Gantt-Chart pengerjaan proyek dalam kurun waktu 1 semester](assets/gantt-chart.png)
