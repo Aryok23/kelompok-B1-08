@@ -4,13 +4,17 @@ on:
   push:
     branches:
       - main
+    
   pull_request:
     branches:
       - main
-
+    
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: FE
 
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -36,7 +40,7 @@ jobs:
         run: npm run build
 
       - name: Start Next.js App (Test)
-        run: npm run start &
+        run:  npm run start &
 
   deploy:
     needs: build
