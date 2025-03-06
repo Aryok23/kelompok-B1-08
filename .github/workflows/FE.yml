@@ -4,17 +4,16 @@ on:
   push:
     branches:
       - main
-    
   pull_request:
     branches:
       - main
-    
+
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: FE
+        working-directory: FE  # Menetapkan direktori kerja ke FE
 
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -29,9 +28,10 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
+          cache-dependency-path: FE/package-lock.json
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci  # Menggunakan npm ci agar sesuai dengan package-lock.json
 
       - name: Run Linter
         run: npm run lint
@@ -40,11 +40,14 @@ jobs:
         run: npm run build
 
       - name: Start Next.js App (Test)
-        run:  npm run start &
+        run: nohup npm run start &  # Menggunakan nohup agar berjalan di background
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: FE  # Pastikan direktori kerja sesuai
 
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
