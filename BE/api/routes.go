@@ -13,7 +13,7 @@ func SetupRoutes() *chi.Mux {
 	r.Use(middlewares.LoggingMiddleware)
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Welcome to KairosAI Backend services!"))
+		w.Write([]byte("Welcome to InfoLoker Backend services!"))
 	})
 
 	return r
