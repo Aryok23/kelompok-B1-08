@@ -25,7 +25,7 @@ Thumbs.db
 # Environment variables and secrets
 .env
 config/config.go.bak
-
+uploads
 # Database files (if any local db dumps exist)
 *.db
 *.sqlite

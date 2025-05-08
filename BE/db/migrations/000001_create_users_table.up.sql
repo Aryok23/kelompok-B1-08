@@ -30,8 +30,12 @@ CREATE TABLE Recruiter (
 CREATE TABLE CV (
     id SERIAL PRIMARY KEY,
     kandidat_id INT REFERENCES Kandidat(id) ON DELETE CASCADE,
+    file_name TEXT NOT NULL,
+    file_path TEXT NOT NULL,
+    file_type TEXT NOT NULL,
     tanggal_unggah TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 CREATE TABLE Parsed_Resume (
     id SERIAL PRIMARY KEY,
