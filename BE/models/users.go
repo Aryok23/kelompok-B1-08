@@ -21,10 +21,11 @@ type User struct {
 
 // RegisterInput untuk request registrasi user
 type RegisterInput struct {
-	Nama      string `json:"nama" validate:"required"`
-	Email     string `json:"email" validate:"required,email"`
-	Password  string `json:"password" validate:"required,min=6"`
-	RoleUsers string `json:"role_users" validate:"required,oneof=kandidat recruiter"`
+	Nama       string `json:"nama" validate:"required"`
+	Email      string `json:"email" validate:"required,email"`
+	Password   string `json:"password" validate:"required,min=6"`
+	RoleUsers  string `json:"role_users" validate:"required,oneof=kandidat recruiter"`
+	Perusahaan string `json:"perusahaan" validate:"required_if=RoleUsers recruiter"`
 }
 
 // LoginInput untuk request login

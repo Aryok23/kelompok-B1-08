@@ -15,7 +15,6 @@ import (
 
 // RegisterUser handles user registration
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Register endpoint hit"))
 	var input models.RegisterInput
 
 	// Decode JSON request
@@ -31,6 +30,15 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Start transaction
+	ctx := r.Context()
+	tx, err := db.DB.Begin(ctx)
+	if err != nil {
+		http.Error(w, "Failed to begin transaction", http.StatusInternalServerError)
+		return
+	}
+	defer tx.Rollback(ctx) // rollback kalau ada error
+
 	// Create new user
 	newUser := models.User{
 		ID:           uuid.New(),
@@ -42,13 +50,55 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 		UpdatedAt:    time.Now(),
 	}
 
-	// Save user to database
-	ctx := r.Context()
-	if err := db.SaveUser(ctx, &newUser); err != nil {
-
+	// Save user ke tabel Users
+	_, err = tx.Exec(ctx,
+		`INSERT INTO Users (id, nama, email, password_hash, role_users, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+		newUser.ID, newUser.Nama, newUser.Email, newUser.PasswordHash,
+		newUser.RoleUsers, newUser.CreatedAt, newUser.UpdatedAt,
+	)
+	if err != nil {
 		http.Error(w, "Error saving user: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	// Insert ke Kandidat atau Recruiter
+	switch input.RoleUsers {
+	case "kandidat":
+		_, err = tx.Exec(ctx,
+			`INSERT INTO Kandidat (user_id) VALUES ($1)`,
+			newUser.ID,
+		)
+		if err != nil {
+			http.Error(w, "Error saving kandidat: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+	case "recruiter":
+		_, err = tx.Exec(ctx,
+			`INSERT INTO Recruiter (user_id, perusahaan) VALUES ($1, $2)`,
+			newUser.ID, input.Perusahaan, // Perusahaan harus ada di RegisterInput
+		)
+		if err != nil {
+			http.Error(w, "Error saving recruiter: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+	default:
+		http.Error(w, "Invalid role_users", http.StatusBadRequest)
+		return
+	}
+
+	// Commit transaksi
+	if err := tx.Commit(ctx); err != nil {
+		http.Error(w, "Failed to commit transaction", http.StatusInternalServerError)
+		return
+	}
+	if input.RoleUsers == "recruiter" && input.Perusahaan == "" {
+		http.Error(w, "Perusahaan wajib diisi untuk recruiter", http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte("User registered successfully"))
 
 	// Generate email verification token
 	token, err := utils.GenerateVerificationToken(newUser.Email)

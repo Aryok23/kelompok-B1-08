@@ -23,5 +23,16 @@ func SetupRoutes() *chi.Mux {
 		r.Get("/verify", handlers.VerifyEmail)
 	})
 
+	r.Route("/api/cv", func(r chi.Router) {
+		r.Post("/upload", handlers.UploadCV) // POST /api/cv/upload
+		r.Get("/{kandidat_id}", handlers.GetCVByKandidat)
+		r.Put("/{cv_id}", handlers.UpdateCV)
+	})
+
+	r.Route("/api/parsed_resume", func(r chi.Router) {
+		r.Post("/", handlers.SaveParsedResume)            // POST /api/parsed_resume
+		r.Get("/{cv_id}", handlers.GetParsedResumeByCVID) // GET /api/parsed_resume/{cv_id}
+		r.Put("/{cv_id}", handlers.UpdateParsedResume)    // PUT /api/parsed_resume/{cv_id}
+	})
 	return r
 }
