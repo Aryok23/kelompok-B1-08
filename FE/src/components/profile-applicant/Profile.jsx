@@ -7,7 +7,8 @@ export default function Profile() {
   const router = useRouter();
 
   const handleEdit = () => {
-    router.push("profile/edit-profile?from=profile");
+    router.push("profile/edit-profile");
+    //router.push("profile/edit-profile?from=profile");
   };
 
   return (

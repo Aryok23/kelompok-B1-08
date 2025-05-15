@@ -24,7 +24,8 @@ export default function Lamar() {
   };
 
   const handleEditProfile = () => {
-    router.push("/profile/edit-profile?from=lamar");
+    router.push("/profile/edit-profile");
+    //router.push("/profile/edit-profile?from=lamar");
   };
 
 
@@ -47,7 +48,7 @@ export default function Lamar() {
         Lowongan / Deskripsi / <span className="text-black font-medium">Kirim Lamaran</span>
       </p>
 
-      <h1 className="text-lg font-semibold mb-4">Data Pelamar</h1>
+      <h1 className="text-lg font-semibold mb-6">Data Pelamar</h1>
     
       <div className="border rounded-lg p-4 mb-6 mt-4 max-w-md w-full">
         <h2 className="font-semibold text-gray-800 mb-2">Fahrin Ulya</h2>
@@ -60,7 +61,7 @@ export default function Lamar() {
       </div>
 
       <div className="mb-6">
-        <h2 className="text-lg font-semibold mb-4">Resume</h2>
+        <h2 className="text-lg font-semibold mb-6">Resume</h2>
         <p className="text-sm text-gray-500 mb-2">Unggah resume kamu dalam format file PDF</p>
 
         {!resume ? (

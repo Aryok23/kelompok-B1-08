@@ -13,14 +13,14 @@ export default function EditProfile() {
 
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const from = searchParams.get("from") || "profile";
+  // const searchParams = useSearchParams();
+  // const from = searchParams.get("from") || "profile";
 
   const handleSubmit = (e) => {
     e.preventDefault();
     alert("Profil berhasil diperbarui!");
-    router.push(from === "lamar" ? "/lamar" : "/profile");
-;
+    router.back(); 
+    //router.push(from === "lamar" ? "/lamar" : "/profile");
   };
 
   return (
