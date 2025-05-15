@@ -30,9 +30,12 @@ const Sent = () => {
 
       {/* Link Lihat semua */}
       <div className="mt-4 text-right font-outfit">
-        <a href="#" className="text-[18px] text-[#05192D] underline flex items-center justify-end gap-1">
-          Lihat semua
-        </a>
+      <a
+        href="/dashboard/aktivitas?tab=sent"
+        className="text-[18px] text-[#05192D] underline flex items-center justify-end gap-1"
+      >
+        Lihat semua
+      </a>
       </div>
     </div>
   );

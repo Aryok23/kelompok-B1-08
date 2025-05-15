@@ -3,19 +3,24 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from "next/navigation";
+
 
 const Signup = () => {
+  const router = useRouter();
   return (
     <div className="mb-[100px]">
-      <div>
-        logo
+      <div 
+        className="relative w-[129px] h-[31px] cursor-pointer ml-[50px] mt-[30px]"
+        onClick={() => router.push("/")}>
+        <Image src="/logonavbar.png" alt="logo_navbar" fill className="object-contain" />
       </div>
       <div className="flex flex-col items-center mt-[100px]">
         <div>
           <div className="flex flex-row justify-end items-end mb-[10px]">
             <Link
               className="font-outfit underline text-[20px]"
-              href="/">
+              href="/company">
               Anda mencari karyawan?
             </Link>
           </div>   
@@ -42,7 +47,9 @@ const Signup = () => {
                 placeholder="Password" 
               />
             </div>
-            <button className="flex items-center justify-center bg-[#03FE62] border-[2px] border-[#B3B3B3] rounded-[5px] w-[525px] h-[50px] font-semibold font-outfit text-[#05192D] text-[20px] mt-[24px]">
+            <button 
+              className="flex items-center justify-center bg-[#03FE62] border-[2px] border-[#B3B3B3] rounded-[5px] w-[525px] h-[50px] font-semibold font-outfit text-[#05192D] text-[20px] mt-[24px]"
+              onClick={() => router.push("/login")}>
               Daftar
             </button>           
               <div className="text-[20px] font-roboto mt-[24px]">

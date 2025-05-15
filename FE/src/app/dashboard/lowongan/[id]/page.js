@@ -4,7 +4,7 @@ import Navbar from '@/components/dashboard-applicant/navbar/Navbar';
 
 const Page = () => {
   return (
-    <div>
+    <div className="min-h-screen">
       <Navbar />
       <DetailLoker />
     </div>

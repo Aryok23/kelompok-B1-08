@@ -43,7 +43,7 @@ const Foryou = () => {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-between items-center mt-6 font-roboto  ">
+      <div className="flex justify-between items-center mt-6 font-roboto">
         <button
           onClick={handlePrev}
           disabled={currentPage === 1}

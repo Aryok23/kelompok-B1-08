@@ -8,7 +8,7 @@ const page = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex flex-row px-[280px] justify-between">
+      <div className="flex flex-row px-[200px] justify-between">
         <Foryou />
         <div className="flex flex-col">
           <Sent />

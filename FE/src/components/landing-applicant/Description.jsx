@@ -1,7 +1,11 @@
+"use client"
+
 import React from 'react'
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const description = () => {
+  const router = useRouter();
   return (
     <div className="bg-[#F7F7FC] h-[1045px] px-[180px] pt-[70px]">
       <div className="flex flex-col gap-y-[65px]">
@@ -13,7 +17,9 @@ const description = () => {
             <div className="text-[#05192D] font-roboto text-xl">
               Info Loker memastikan keahlian dan pengalaman kerjamu dipertimbangkan karena AI resume parser kami mencocokkan isi resume kamu dengan deskripsi pekerjaan secara kontekstual.
             </div>
-            <button className="bg-[#03FE62] font-outfit font-semibold text-xl text-[#05192D] w-[175px] h-[50px] rounded-[10px] hover:bg-[#03EF62] transition-all duration-300 ease-in-out">
+            <button 
+              className="bg-[#03FE62] font-outfit font-semibold text-xl text-[#05192D] w-[175px] h-[50px] rounded-[10px] hover:bg-[#03EF62] transition-all duration-300 ease-in-out"
+              onClick={() => router.push("/login")}>
               Cari Lowongan
             </button>
           </div>
