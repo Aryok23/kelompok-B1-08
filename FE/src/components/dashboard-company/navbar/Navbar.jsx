@@ -26,7 +26,7 @@ const Navbar = () => {
     <div className="flex justify-center items-center fixed w-full h-[72px] bg-white font-outfit z-50 border-b-2 px-6">
       <div 
         className="relative w-[129px] h-[31px] cursor-pointer"
-        onClick={() => router.push("/dashboard")}>
+        onClick={() => router.push("/company/dashboard")}>
         <Image src="/logonavbar.png" alt="logo_navbar" fill className="object-contain" />
       </div>
 
@@ -41,7 +41,7 @@ const Navbar = () => {
 
       {/* User Profile Section */}
       <div className="flex items-center gap-x-3 relative" ref={dropdownRef}>
-        <div className="text-[18px]">Hi, user</div>
+        <div className="text-[18px]">Hi, PT Maju Jaya</div>
 
         {/* Button with profile & arrow */}
         <button
@@ -71,15 +71,15 @@ const Navbar = () => {
         {/* Dropdown Menu */}
         {dropdownOpen && (
           <div className="absolute top-[60px] right-0 bg-white border rounded shadow-md w-[150px] py-2 z-50">
-            <Link href="/dashboard/profile">
+            <Link href="/profile">
               <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Profile</div>
             </Link>
-            <Link href="/dashboard/aktivitas">
+            {/* <Link href="/aktivitas">
               <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Aktivitas</div>
-            </Link>
+            </Link> */}
             <button 
               className="w-full text-left text-red-600 px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              onClick={() => router.push("/")}>
+              onClick={() => router.push("/company")}>
               Logout
             </button>
           </div>

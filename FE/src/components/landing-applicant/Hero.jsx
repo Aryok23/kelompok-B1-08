@@ -1,6 +1,11 @@
+"use client"
+
 import React from 'react'
 
+import { useRouter } from "next/navigation";
+
 const hero = () => {
+  const router = useRouter();
 
   return (
     <div className="flex justify-center items-center h-[550px] bg-[#5EB1FF] pt-[72px]">
@@ -20,7 +25,9 @@ const hero = () => {
               className="border-[1px] border-[#B3B3B3] rounded-[5px] w-[425px] font-roboto text-[#05192D] text-xl focus:outline-none pl-[11px] pr-[11px]"  
               placeholder="Email" 
             />
-            <button className="font-outfit text-xl font-semibold bg-[#03FE62] text-[#05192D] h-[45px] w-[100px] rounded-[5px] hover:bg-[#03EF62] transition-all duration-300 ease-in-out">
+            <button 
+              className="font-outfit text-xl font-semibold bg-[#03FE62] text-[#05192D] h-[45px] w-[100px] rounded-[5px] hover:bg-[#03EF62] transition-all duration-300 ease-in-out"
+              onClick={() => router.push("/register")}>
               Daftar
             </button>
           </div>

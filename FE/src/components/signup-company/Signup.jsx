@@ -2,12 +2,17 @@
 
 import React from 'react'
 import Link from 'next/link'
+import { useRouter } from "next/navigation";
+import Image from 'next/image';
 
 const Signup = () => {
+  const router = useRouter();
   return (
     <div className="mb-[100px]">
-      <div>
-        logo
+      <div 
+        className="relative w-[129px] h-[31px] cursor-pointer ml-[50px] mt-[30px]"
+        onClick={() => router.push("/company")}>
+        <Image src="/logonavbar.png" alt="logo_navbar" fill className="object-contain" />
       </div>
       <div className="flex flex-col items-center mt-[100px]">
         <div>
@@ -41,14 +46,16 @@ const Signup = () => {
                 placeholder="Password" 
               />
             </div>
-            <button className="flex items-center justify-center bg-[#03FE62] border-[2px] border-[#B3B3B3] rounded-[5px] w-[525px] h-[50px] font-semibold font-outfit text-[#05192D] text-[20px] mt-[24px]">
+            <button 
+              className="flex items-center justify-center bg-[#03FE62] border-[2px] border-[#B3B3B3] rounded-[5px] w-[525px] h-[50px] font-semibold font-outfit text-[#05192D] text-[20px] mt-[24px]"
+              onClick={() => router.push("/company/login")}>
               Daftar
             </button>           
           </div>
         </div>
         <div className="flex items-center justify-center w-[615px] h-[66px] border-[2px] border-[#D9D9D9] rounded-[10px] font-outfit text-[20px] mt-[24px]">
           <span>Sudah memiliki akun?&nbsp;</span>
-          <Link href="/login" className="underline text-blue-600 hover:text-blue-800">
+          <Link href="/company/login" className="underline text-blue-600 hover:text-blue-800">
             Login
           </Link>
         </div>

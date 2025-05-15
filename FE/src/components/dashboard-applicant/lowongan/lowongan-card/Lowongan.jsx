@@ -25,7 +25,7 @@ const Lowongan = ({ id, title, company, location, posted }) => {
     <div className="border border-gray-300 rounded-lg p-4 w-full flex justify-between items-start">
       <div>
         <Link
-        href={`/dashboard/lowongan/${id}`}
+        href={`/dashboard/lowongan/${id-1}`}
         className="text-[#05192D] font-bold text-[24px] relative hover:underline transition-all duration-300"
         >
           {title}

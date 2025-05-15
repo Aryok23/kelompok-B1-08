@@ -1,7 +1,11 @@
+"use client"
+
 import React from 'react'
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const description = () => {
+  const router = useRouter();
   return (
     <div className="bg-[#F7F7FC] h-[2945px] px-[180px] pt-[70px]">
       <div className="flex flex-col gap-y-[65px]">
@@ -13,7 +17,10 @@ const description = () => {
             <div className="text-[#05192D] font-roboto text-xl">
               InfoLoker membantu perusahaan Anda menemukan kandidat terbaik tanpa harus meninjau ratusan resume secara manual dalam proses rekrutmen dengan teknologi Resume Parser AI
             </div>
-            <button className="bg-[#03FE62] font-outfit font-semibold text-xl text-[#05192D] w-[285px] h-[50px] rounded-[10px] hover:bg-[#03EF62] transition-all duration-300 ease-in-out">
+            <button 
+              className="bg-[#03FE62] font-outfit font-semibold text-xl text-[#05192D] w-[285px] h-[50px] rounded-[10px] hover:bg-[#03EF62] transition-all duration-300 ease-in-out"
+              onClick={() => router.push("/company/register")}
+              >
               Daftarkan Perusahaan Anda
             </button>
           </div>
@@ -74,7 +81,9 @@ const description = () => {
             </div>
           </div>
           <div className="flex justify-center items-center">
-            <button className="bg-[#03FE62] font-outfit font-semibold text-xl text-[#05192D] w-[185px] h-[50px] rounded-[10px] hover:bg-[#03EF62] transition-all duration-300 ease-in-out">
+            <button 
+              className="bg-[#03FE62] font-outfit font-semibold text-xl text-[#05192D] w-[185px] h-[50px] rounded-[10px] hover:bg-[#03EF62] transition-all duration-300 ease-in-out"
+              onClick={() => router.push("/company/login")}>
               Buat Lowongan
             </button>
           </div>       
@@ -133,7 +142,9 @@ const description = () => {
             Mulai Proses Rekrutmen dengan Info Loker
           </div>
           <div className="flex justify-center items-center">
-            <button className="bg-[#03FE62] font-outfit font-semibold text-xl text-[#05192D] w-[185px] h-[50px] rounded-[10px] hover:bg-[#03EF62] transition-all duration-300 ease-in-out">
+            <button 
+              className="bg-[#03FE62] font-outfit font-semibold text-xl text-[#05192D] w-[185px] h-[50px] rounded-[10px] hover:bg-[#03EF62] transition-all duration-300 ease-in-out"
+              onClick={() => router.push("/company/login")}>
               Buat Lowongan
             </button>
           </div>  
