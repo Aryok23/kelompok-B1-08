@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'; // <- ini hook Next.js App Ro
 import Lowongan from '@/components/dashboard-applicant/lowongan/lowongan-card/Lowongan';
 import jobSave from '@/data/jobSave';
 import jobSent from '@/data/jobSent';
+import Image from 'next/image';
 
 const Aktivitas = () => {
   const searchParams = useSearchParams();
@@ -32,7 +33,14 @@ const Aktivitas = () => {
             activeTab === 'saved' ? 'border-[#05192D] text-[#05192D]' : 'border-transparent text-gray-400'
           } font-medium`}
         >
-          <img src="/saved.png" className="w-4 h-4" alt="saved" />
+          <div className="relative w-[30px] h-[30px]" >
+                    <Image 
+                      src="/saved.png" 
+                      alt="search" 
+                      fill 
+                      className="object-contain" 
+                    />
+                  </div>
           Tersimpan
         </button>
         <button
@@ -41,7 +49,14 @@ const Aktivitas = () => {
             activeTab === 'sent' ? 'border-[#05192D] text-[#05192D]' : 'border-transparent text-gray-400'
           } font-medium`}
         >
-          <img src="/sent.png" className="w-4 h-4" alt="sent" />
+         <div className="relative w-[30px] h-[30px]" >
+                   <Image 
+                     src="/sent.png" 
+                     alt="search" 
+                     fill 
+                     className="object-contain" 
+                   />
+                 </div>
           Lamaran
         </button>
       </div>

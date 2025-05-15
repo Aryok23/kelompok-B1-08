@@ -4,7 +4,7 @@ import React from 'react'
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-const description = () => {
+const Description = () => {
   const router = useRouter();
   return (
     <div className="bg-[#F7F7FC] h-[1045px] px-[180px] pt-[70px]">

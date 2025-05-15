@@ -4,7 +4,7 @@ import React from 'react'
 
 import { useRouter } from "next/navigation";
 
-const hero = () => {
+const Hero = () => {
   const router = useRouter();
 
   return (
