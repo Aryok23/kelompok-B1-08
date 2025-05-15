@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Lowongan from '@/components/dashboard-applicant/lowongan/lowongan-card/Lowongan';
 import jobData from '@/data/jobData';
+import Image from 'next/image';
 
 const Foryou = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,7 +25,14 @@ const Foryou = () => {
     <div className="min-h-[1350px] w-[600px] pt-[150px] pb-[150px]">
       {/* Header */}
       <div className="flex items-center gap-2 mb-6">
-        <img src="/image-search-lowongan.png" alt="search" className="w-[40px] h-[40px]" />
+        <div className="relative w-[40px] h-[40px]">
+        <Image 
+          src="/image-search-lowongan.png" 
+          alt="search" 
+          fill 
+          className="object-contain" 
+        />
+        </div>
         <h1 className="text-4xl font-bold font-outfit text-[#05192D]">Lowongan untuk Kamu</h1>
       </div>
 

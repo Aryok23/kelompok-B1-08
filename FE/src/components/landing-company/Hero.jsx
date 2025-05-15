@@ -3,7 +3,7 @@
 import React from 'react'
 import { useRouter } from "next/navigation";
 
-const hero = () => {
+const Hero = () => {
   const router = useRouter();
   return (
     <div className="flex justify-center items-center h-[550px] bg-[#5EB1FF] pt-[72px]">

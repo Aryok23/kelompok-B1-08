@@ -1,6 +1,7 @@
 import React from 'react';
 import Lowongan from '@/components/dashboard-applicant/lowongan/lowongan-card/Lowongan';
 import jobData from '@/data/jobSent';
+import Image from 'next/image';
 
 const Sent = () => {
   const sentData = jobData.slice(0, 2); // ambil 2 lamaran contoh
@@ -9,7 +10,14 @@ const Sent = () => {
     <div className="mb-10 pt-[160px]">
       {/* Header */}
       <div className="flex items-center gap-2 mb-4">
-        <img src="/sent.png" alt="sent" className="w-[30px] h-[30px]" />
+        <div className="relative w-[30px] h-[30px]" >
+          <Image 
+            src="/sent.png" 
+            alt="search" 
+            fill 
+            className="object-contain" 
+          />
+        </div>
         <h1 className="text-3xl font-bold font-outfit text-[#05192D]">Lamaran Terkirim</h1>
       </div>
 
