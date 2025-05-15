@@ -1,0 +1,14 @@
+import React from 'react';
+import DetailLoker from '@/components/dashboard-applicant/lowongan/detail/DetailLoker';
+import Navbar from '@/components/dashboard-applicant/navbar/Navbar';
+
+const Page = () => {
+  return (
+    <div>
+      <Navbar />
+      <DetailLoker />
+    </div>
+  );
+};
+
+export default Page;
