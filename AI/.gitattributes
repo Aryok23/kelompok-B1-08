@@ -1,0 +1,4 @@
+model_resume_parser_final/model.safetensors filter=lfs diff=lfs merge=lfs -text
+model_resume_parser_final/tokenizer.json filter=lfs diff=lfs merge=lfs -text
+model_resume_parser_final/training_args.bin filter=lfs diff=lfs merge=lfs -text
+model_resume_parser_final/vocab.txt filter=lfs diff=lfs merge=lfs -text

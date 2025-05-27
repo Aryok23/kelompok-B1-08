@@ -1,55 +1,48 @@
-from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
-import json
+from transformers import pipeline, AutoTokenizer, AutoModelForTokenClassification
 import os
+import json
 import nltk
 nltk.download('punkt')
-
 from nltk.tokenize import sent_tokenize
 
-# === 1. Load Model & Label Map ===
-MODEL_DIR = "../AI/model_parser"  # Ganti sesuai path model kamu
+# === 1. Load Model & Tokenizer ===
+MODEL_DIR = "../AI/model_resume"  # Ganti path sesuai model kamu
 
-# Load label map
-with open(os.path.join(MODEL_DIR, "label_map.json")) as f:
-    label_map = json.load(f)
-    id_to_label = {v: k for k, v in label_map.items()}  # Misal: {0: "background_kandidat", 1: "keterampilan", ...}
+tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)
+model = AutoModelForTokenClassification.from_pretrained(MODEL_DIR)
 
-# Load pipeline klasifikasi
-clf_pipeline = pipeline("text-classification", model=MODEL_DIR, tokenizer=MODEL_DIR)
+ner_pipeline = pipeline(
+    "token-classification",
+    model=model,
+    tokenizer=tokenizer,
+    aggregation_strategy="simple"
+)
 
-# === 2. Fungsi Parsing Resume ===
+# === 2. Parsing Resume per Kalimat ===
 def parse_resume_text(resume_text: str, kandidat_id: str = ""):
-    # Pisah teks menjadi kalimat
     sentences = sent_tokenize(resume_text)
 
-    # Siapkan struktur kosong
     parsed = {
-        "kandidat_id": kandidat_id,
         "ketrampilan": [],
         "pengalaman_kerja": [],
         "background_kandidat": []
     }
 
-    # Klasifikasikan tiap kalimat
     for sentence in sentences:
-        result = clf_pipeline(sentence, truncation=True)[0]
-        label_id = int(result["label"].replace("LABEL_", ""))
-        label_str = id_to_label[label_id].lower()
+        ner_results = ner_pipeline(sentence)
+        for entity in ner_results:
+            label = entity["entity_group"].lower()
+            value = sentence[entity["start"]:entity["end"]].strip()
 
-        print(f"[DEBUG] Kalimat: {sentence}")
-        print(f"[DEBUG] Label: {label_str}, Score: {result['score']:.2f}")
+            if "keterampilan" in label:
+                parsed["ketrampilan"].append(value)
+            elif "pengalaman" in label:
+                parsed["pengalaman_kerja"].append(value)
+            elif "background" in label or "pendidikan" in label:
+                parsed["background_kandidat"].append(value)
 
-        if "keterampilan" in label_str:
-            parsed["ketrampilan"].append(sentence)
-        elif "pengalaman" in label_str:
-            parsed["pengalaman_kerja"].append(sentence)
-        elif "pendidikan" in label_str or "background_kandidat" in label_str:
-            parsed["background_kandidat"].append(sentence)
+    parsed["ketrampilan"] = ", ".join(parsed["ketrampilan"])
+    parsed["pengalaman_kerja"] = ", ".join(parsed["pengalaman_kerja"])
+    parsed["background_kandidat"] = ", ".join(parsed["background_kandidat"])
+    return parsed
 
-    # Gabungkan kalimat jadi 1 string per bagian
-    return {
-        "kandidat_id": kandidat_id,
-        "ketrampilan": " ".join(parsed["ketrampilan"]),
-        "pengalaman_kerja": " ".join(parsed["pengalaman_kerja"]),
-        "background_kandidat": " ".join(parsed["background_kandidat"]),
-    }
