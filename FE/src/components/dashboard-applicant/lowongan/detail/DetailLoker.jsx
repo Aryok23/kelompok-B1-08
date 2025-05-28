@@ -3,10 +3,12 @@ import React from 'react';
 import { useParams } from 'next/navigation';
 import jobData from '@/data/jobData';
 import Image from 'next/image';
+import { useRouter } from "next/navigation";
 
 const DetailLoker = () => {
   const { id } = useParams();
   const job = jobData[parseInt(id)];
+  const router = useRouter();
 
   if (!job) return <p>Lowongan tidak ditemukan.</p>;
 
@@ -42,7 +44,9 @@ const DetailLoker = () => {
           </p>
 
           <div className="flex gap-4 mt-6">
-            <button className="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-lg">
+            <button 
+              className="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-lg" 
+              onClick={() => router.push(`/dashboard/lamar`)}>
               Lamar
             </button>
             <button className="border border-green-500 text-green-500 font-semibold px-6 py-2 rounded-lg hover:bg-green-50">

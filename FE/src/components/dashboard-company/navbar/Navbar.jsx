@@ -71,7 +71,7 @@ const Navbar = () => {
         {/* Dropdown Menu */}
         {dropdownOpen && (
           <div className="absolute top-[60px] right-0 bg-white border rounded shadow-md w-[150px] py-2 z-50">
-            <Link href="/profile">
+            <Link href="/company/dashboard/profile">
               <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Profile</div>
             </Link>
             {/* <Link href="/aktivitas">

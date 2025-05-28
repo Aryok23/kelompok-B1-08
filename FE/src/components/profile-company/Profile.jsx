@@ -20,10 +20,10 @@ export default function Profile() {
       <h1 className="text-lg font-semibold mb-8">Data Pelamar</h1>
 
       <div className="border rounded-lg p-4 mb-6 mt-4 max-w-md w-full">
-        <h2 className="font-semibold text-gray-800 mb-2">Fahrin Ulya</h2>
+        <h2 className="font-semibold text-gray-800 mb-2">PT. Maju Mundur</h2>
         <p className="text-sm text-gray-600">📍 Kabupaten Sleman, DIY</p>
         <p className="text-sm text-gray-600">📞 +62 85727577715</p>
-        <p className="text-sm text-gray-600">✉️ fahrinulya@gmail.com</p>
+        <p className="text-sm text-gray-600">✉️ majumundur@gmail.com</p>
         <Button
           onClick={handleEdit}
           variant="outline"

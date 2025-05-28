@@ -1,3 +1,4 @@
+// Daftar lowongan kerja
 export const jobList = [
   {
     id: 1,
@@ -30,7 +31,7 @@ export const jobList = [
     date: "17/4/25",
     type: "Full-Time",
     salary: "Rp 15.000.000 - Rp 25.000.000",
-    description: "Merancang dan mengembangkan solusi AI untuk kebutuhan bisnis dan product."
+    description: "Merancang dan mengembangkan solusi AI untuk kebutuhan bisnis dan produk."
   },
   {
     id: 4,
@@ -41,7 +42,7 @@ export const jobList = [
     date: "17/4/25",
     type: "Full-Time",
     salary: "Rp 12.000.000 - Rp 20.000.000",
-    description: "Melakukan pengujian keamanan pada sistem dan infrastruktur IT perusahaan."
+    description: "Melakukan pengujian keamanan pada sistem dan infrastruktur TI perusahaan."
   },
   {
     id: 5,
@@ -52,191 +53,60 @@ export const jobList = [
     date: "17/4/25",
     type: "Full-Time",
     salary: "Rp 12.000.000 - Rp 18.000.000",
-    description: "Mengembangkan dan memelihara API dan infrastruktur server untuk aplikasi web dan mobile."
+    description: "Mengembangkan dan memelihara API serta infrastruktur server untuk aplikasi web dan mobile."
   }
 ];
 
-// Daftar pelamar per lowongan
+// Daftar pelamar berdasarkan ID lowongan
 export const applicantsData = {
-  // Key adalah ID lowongan
   1: [ // Data Scientist
-    {
-      id: 1,
-      name: "Timotius Kristafael Harjanto",
-      experience: 100,
-      skills: 100,
-      background: 100
-    },
-    {
-      id: 2,
-      name: "Raden Aryo Bismo Nugroho",
-      experience: 150,
-      skills: 150,
-      background: 150
-    },
-    {
-      id: 3,
-      name: "Fahrin Ulya Nisrina",
-      experience: 200,
-      skills: 200,
-      background: 200
-    }
+    { id: 1, name: "Timotius Kristafael Harjanto", experience: 100, skills: 100, background: 100 },
+    { id: 2, name: "Raden Aryo Bismo Nugroho", experience: 150, skills: 150, background: 150 },
+    { id: 3, name: "Fahrin Ulya Nisrina", experience: 200, skills: 200, background: 200 }
   ],
   2: [ // Mobile Front-End Engineer
-    {
-      id: 4,
-      name: "Timotius Kristafael Harjanto",
-      experience: 200,
-      skills: 200,
-      background: 200
-    }
+    { id: 4, name: "Timotius Kristafael Harjanto", experience: 200, skills: 200, background: 200 }
   ],
   3: [ // AI Engineer
-    {
-      id: 5,
-      name: "Raden Aryo Bismo Nugroho",
-      experience: 150,
-      skills: 150,
-      background: 150
-    },
-    {
-      id: 6,
-      name: "Fahrin Ulya Nisrina",
-      experience: 250,
-      skills: 250,
-      background: 250
-    },
-    {
-      id: 7,
-      name: "Timotius Kristafael Harjanto",
-      experience: 100,
-      skills: 100,
-      background: 100
-    },
-    {
-      id: 8,
-      name: "Raden Aryo Bismo Nugroho",
-      experience: 150,
-      skills: 150,
-      background: 150
-    },
-    {
-      id: 9,
-      name: "Fahrin Ulya Nisrina",
-      experience: 200,
-      skills: 200,
-      background: 200
-    }
+    { id: 5, name: "Raden Aryo Bismo Nugroho", experience: 150, skills: 150, background: 150 },
+    { id: 6, name: "Fahrin Ulya Nisrina", experience: 250, skills: 250, background: 250 },
+    { id: 7, name: "Timotius Kristafael Harjanto", experience: 100, skills: 100, background: 100 },
+    { id: 8, name: "Raden Aryo Bismo Nugroho", experience: 150, skills: 150, background: 150 },
+    { id: 9, name: "Fahrin Ulya Nisrina", experience: 200, skills: 200, background: 200 }
   ],
   4: [ // Penetration Tester
-    {
-      id: 10,
-      name: "Raden Aryo Bismo Nugroho",
-      experience: 180,
-      skills: 220,
-      background: 150
-    },
-    {
-      id: 11,
-      name: "Fahrin Ulya Nisrina",
-      experience: 190,
-      skills: 180,
-      background: 210
-    },
-    {
-      id: 12,
-      name: "Timotius Kristafael Harjanto",
-      experience: 210,
-      skills: 190,
-      background: 180
-    }
+    { id: 10, name: "Raden Aryo Bismo Nugroho", experience: 180, skills: 220, background: 150 },
+    { id: 11, name: "Fahrin Ulya Nisrina", experience: 190, skills: 180, background: 210 },
+    { id: 12, name: "Timotius Kristafael Harjanto", experience: 210, skills: 190, background: 180 }
   ],
   5: [ // Back-End Engineer
-    {
-      id: 13,
-      name: "Timotius Kristafael Harjanto",
-      experience: 150,
-      skills: 180,
-      background: 170
-    },
-    {
-      id: 14,
-      name: "Raden Aryo Bismo Nugroho",
-      experience: 190,
-      skills: 170,
-      background: 160
-    },
-    {
-      id: 15,
-      name: "Fahrin Ulya Nisrina",
-      experience: 170,
-      skills: 190,
-      background: 180
-    },
-    {
-      id: 16,
-      name: "Timotius Kristafael Harjanto",
-      experience: 160,
-      skills: 150,
-      background: 190
-    },
-    {
-      id: 17,
-      name: "Raden Aryo Bismo Nugroho",
-      experience: 180,
-      skills: 160,
-      background: 150
-    },
-    {
-      id: 18,
-      name: "Fahrin Ulya Nisrina",
-      experience: 150,
-      skills: 150,
-      background: 160
-    },
-    {
-      id: 19,
-      name: "Timotius Kristafael Harjanto",
-      experience: 170,
-      skills: 170,
-      background: 170
-    },
-    {
-      id: 20,
-      name: "Raden Aryo Bismo Nugroho",
-      experience: 160,
-      skills: 160,
-      background: 180
-    },
-    {
-      id: 21,
-      name: "Fahrin Ulya Nisrina",
-      experience: 180,
-      skills: 180,
-      background: 190
-    },
-    {
-      id: 22,
-      name: "Timotius Kristafael Harjanto",
-      experience: 190,
-      skills: 190,
-      background: 150
-    }
+    { id: 13, name: "Timotius Kristafael Harjanto", experience: 150, skills: 180, background: 170 },
+    { id: 14, name: "Raden Aryo Bismo Nugroho", experience: 190, skills: 170, background: 160 },
+    { id: 15, name: "Fahrin Ulya Nisrina", experience: 170, skills: 190, background: 180 },
+    { id: 16, name: "Timotius Kristafael Harjanto", experience: 160, skills: 150, background: 190 },
+    { id: 17, name: "Raden Aryo Bismo Nugroho", experience: 180, skills: 160, background: 150 },
+    { id: 18, name: "Fahrin Ulya Nisrina", experience: 150, skills: 150, background: 160 },
+    { id: 19, name: "Timotius Kristafael Harjanto", experience: 170, skills: 170, background: 170 },
+    { id: 20, name: "Raden Aryo Bismo Nugroho", experience: 160, skills: 160, background: 180 },
+    { id: 21, name: "Fahrin Ulya Nisrina", experience: 180, skills: 180, background: 190 },
+    { id: 22, name: "Timotius Kristafael Harjanto", experience: 190, skills: 190, background: 150 }
   ]
 };
 
-// Fungsi helper untuk mendapatkan job berdasarkan id atau title
+// Fungsi helper untuk mendapatkan data job berdasarkan ID
 export const getJobById = (jobId) => {
-  return jobList.find(job => job.id === parseInt(jobId));
+  const id = parseInt(jobId);
+  return jobList.find(job => job.id === id) || null;
 };
 
+// Fungsi helper untuk mendapatkan data job berdasarkan judul
 export const getJobByTitle = (jobTitle) => {
-  return jobList.find(job => job.title === jobTitle);
+  return jobList.find(job => job.title.toLowerCase() === jobTitle.toLowerCase()) || null;
 };
 
-// Status warna
+// Mapping status ke warna badge
 export const statusColor = {
   Aktif: "bg-green-100 text-green-600",
   Draft: "bg-gray-100 text-gray-600",
-  Closed: "bg-red-100 text-red-600",
+  Closed: "bg-red-100 text-red-600"
 };
