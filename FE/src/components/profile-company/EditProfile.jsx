@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 
 export default function EditProfile() {
-  const [firstName, setFirstName] = useState("Fahrin");
-  const [lastName, setLastName] = useState("Ulya");
+  const [firstName, setFirstName] = useState("PT. Maju mundur");
+  // const [lastName, setLastName] = useState("Ulya");
   const [address, setAddress] = useState("Kabupaten Sleman, DIY");
   const [phone, setPhone] = useState("8123456789");
 
@@ -33,7 +33,7 @@ export default function EditProfile() {
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-sm font-semibold mb-1">Nama Depan</label>
+            <label className="block text-sm font-semibold mb-1">Nama Perusahaan</label>
             <input
               type="text"
               value={firstName}
@@ -41,7 +41,7 @@ export default function EditProfile() {
               className="w-full px-3 py-2 border rounded-md text-sm"
             />
           </div>
-          <div>
+          {/* <div>
             <label className="block text-sm font-semibold mb-1">Nama Belakang</label>
             <input
               type="text"
@@ -49,7 +49,7 @@ export default function EditProfile() {
               onChange={(e) => setLastName(e.target.value)}
               className="w-full px-3 py-2 border rounded-md text-sm"
             />
-          </div>
+          </div> */}
         </div>
 
         <div className="mb-4">

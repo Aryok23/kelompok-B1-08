@@ -15,6 +15,7 @@ import { jobList, statusColor } from "@/data/loker"; // Import data dari file da
 const ITEMS_PER_PAGE = 3;
 
 const Dashboard = () => {
+
   const [page, setPage] = useState(1);
   const totalPages = Math.ceil(jobList.length / ITEMS_PER_PAGE);
   const router = useRouter();
@@ -26,7 +27,7 @@ const Dashboard = () => {
   
   // Fungsi untuk navigasi ke halaman daftar pelamar
   const viewApplicants = (jobId) => {
-    router.push(`/company/dashboard/job-applicants/${jobId}`);
+    router.push(`/company/dashboard/job-applicants`);
   };
 
   return (
@@ -39,7 +40,9 @@ const Dashboard = () => {
         <p className="text-gray-600">
           Temukan kandidat karyawan terbaik Anda bersama Info Loker! Mulai dengan membuat lowongan!
         </p>
-        <Button className="mt-4 bg-green-500 hover:bg-green-600">
+        <Button 
+          className="mt-4 bg-green-500 hover:bg-green-600"
+          onClick={() => router.push("/company/dashboard/new")}>
           Buat Lowongan
         </Button>
       </div>

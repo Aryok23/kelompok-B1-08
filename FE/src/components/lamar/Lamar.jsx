@@ -43,10 +43,10 @@ export default function Lamar() {
   };
 
   return (
-    <main className="max-w-3xl mx-auto mt-10 px-4 pb-24">
-      <p className="text-sm text-gray-400 mb-6">
+    <div className="max-w-3xl mx-auto pt-[110px] px-4 pb-24">
+      {/* <p className="text-sm text-gray-400 mb-6">
         Lowongan / Deskripsi / <span className="text-black font-medium">Kirim Lamaran</span>
-      </p>
+      </p> */}
 
       <h1 className="text-lg font-semibold mb-6">Data Pelamar</h1>
     
@@ -112,6 +112,6 @@ export default function Lamar() {
         <Send size={16} />
         Kirim Lamaran
       </Button>
-    </main>
+    </div>
   );
 }
