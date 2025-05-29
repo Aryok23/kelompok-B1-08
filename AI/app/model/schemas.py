@@ -1,26 +1,23 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
-class CandidateInput(BaseModel):
-    keterampilan: str
+
+class KandidatData(BaseModel):
     pengalaman_kerja: str
+    keterampilan: str
     background_kandidat: str
 
-class JobInput(BaseModel):
-    job_id: Optional[int] = None
+class JobData(BaseModel):
     nama_pekerjaan: str
     deskripsi_pekerjaan: str
 
-class Top5Request(BaseModel):
-    kandidat_id: str
-    kandidat: CandidateInput
-    jobs: List[JobInput]
-
 class SpecificJobRequest(BaseModel):
-    kandidat_id: str
+    kandidat_id: int
     job_id: int
-    kandidat: CandidateInput
-    job: JobInput
+    kandidat: KandidatData
+    job: JobData
+
+
 
 
 class ResumeParseResponse(BaseModel):

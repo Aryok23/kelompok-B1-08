@@ -34,5 +34,20 @@ func SetupRoutes() *chi.Mux {
 		r.Get("/{cv_id}", handlers.GetParsedResumeByCVID) // GET /api/parsed_resume/{cv_id}
 		r.Put("/{cv_id}", handlers.UpdateParsedResume)    // PUT /api/parsed_resume/{cv_id}
 	})
+	r.Route("/api/jobs", func(r chi.Router) {
+		r.Post("/", handlers.CreateJob)           // POST /api/jobs
+		r.Get("/", handlers.GetAllJobs)           // GET /api/jobs
+		r.Get("/{job_id}", handlers.GetJobByID)   // GET /api/jobs/{job_id}
+		r.Put("/{job_id}", handlers.UpdateJob)    // PUT /api/jobs/{job_id}
+		r.Delete("/{job_id}", handlers.DeleteJob) // DELETE /api/jobs/{job_id}
+	})
+	r.Route("/api/applications", func(r chi.Router) {
+		r.Post("/", handlers.CreateApplication)                          // POST /api/applications
+		r.Get("/{application_id}", handlers.GetApplicationsByKandidatID) // GET /api/applications/{application_id}
+		r.Delete("/{application_id}", handlers.DeleteApplication)        // DELETE /api/applications/{application_id}
+	})
+	r.Route("/api/matching", func(r chi.Router) {
+		r.Post("/", handlers.CreateMatchingWithSimilarity)
+	})
 	return r
 }

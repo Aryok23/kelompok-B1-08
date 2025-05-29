@@ -4,16 +4,17 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/Timotius2005/InfoLoker-BE/db"
 	"github.com/go-chi/chi/v5"
 )
 
 type Application struct {
-	ID           int    `json:"id"`
-	KandidatID   int    `json:"kandidat_id"`
-	JobID        int    `json:"job_id"`
-	TanggalApply string `json:"tanggal_apply"`
+	ID           int       `json:"id"`
+	KandidatID   int       `json:"kandidat_id"`
+	JobID        int       `json:"job_id"`
+	TanggalApply time.Time `json:"tanggal_apply"`
 }
 
 func CreateApplication(w http.ResponseWriter, r *http.Request) {
