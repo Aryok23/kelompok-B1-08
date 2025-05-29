@@ -29,9 +29,7 @@ def get_ocr_reader():
     return ocr_reader
 
 def extract_text_with_easyocr(pdf_contents):
-    """
-    Extract text from PDF using EasyOCR
-    """
+    
     try:
         # Convert PDF to images
         print("Converting PDF to images...")

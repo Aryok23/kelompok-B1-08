@@ -1,24 +1,35 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
-from app.model.schemas import Top5Request, SpecificJobRequest
-from app.services.matcher import match_top_5_jobs, match_to_specific_job
+from app.model.schemas import  SpecificJobRequest
+from app.services.matcher import  match_to_specific_job
 from app.services.parser import parse_resume_text, extract_text_with_easyocr
 from app.model.schemas import  ResumeParseResponse
 import pdfplumber
 import io
 from typing import Optional
+import logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
-@router.post("/top-5")
-def get_top_5_matches(req: Top5Request):
-    results = match_top_5_jobs(req.kandidat, req.jobs)
-    return {
-        "kandidat_id": req.kandidat_id,
-        "matches": results
-    }
-
+# @router.post("/top-5")
+# def get_top_5_matches(req: Top5Request):
+#     results = match_top_5_jobs(req.kandidat, req.jobs)
+#     return {
+#         "kandidat_id": req.kandidat_id,
+#         "matches": results
+#     }
 @router.post("/specific-job")
 def get_specific_job_match(req: SpecificJobRequest):
+    logger.info(f"Received request: kandidat_id={req.kandidat_id}, job_id={req.job_id}")
+    logger.info(f"Kandidat data: {req.kandidat}")
+    logger.info(f"Job data: {req.job}")
+
     score = match_to_specific_job(req.kandidat, req.job)
+    logger.info(f"Calculated similarity score: {score}")
+
     return {
         "kandidat_id": req.kandidat_id,
         "job_id": req.job_id,
@@ -26,7 +37,7 @@ def get_specific_job_match(req: SpecificJobRequest):
         "similarity_score": round(score, 4)
     }
 
-import logging
+
 
 @router.post("/parse/resume", response_model=ResumeParseResponse)
 async def parse_resume_file(
