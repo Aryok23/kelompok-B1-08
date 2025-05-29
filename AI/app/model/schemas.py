@@ -22,9 +22,6 @@ class SpecificJobRequest(BaseModel):
     kandidat: CandidateInput
     job: JobInput
 
-class ResumeParseRequest(BaseModel):
-    kandidat_id: str
-    resume_text: str
 
 class ResumeParseResponse(BaseModel):
     kandidat_id: str

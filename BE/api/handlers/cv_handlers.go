@@ -1,26 +1,34 @@
 package handlers
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
+	"mime/multipart"
 	"net/http"
 	"os"
+
 	"path/filepath"
 	"strconv"
 	"time"
 
 	"github.com/Timotius2005/InfoLoker-BE/db"
 	"github.com/Timotius2005/InfoLoker-BE/models"
+
 	"github.com/go-chi/chi/v5"
 )
 
+type ParseResponse struct {
+	PengalamanKerja    string `json:"pengalaman_kerja"`
+	Keterampilan       string `json:"ketrampilan"`
+	BackgroundKandidat string `json:"background_kandidat"`
+}
+
 func UploadCV(w http.ResponseWriter, r *http.Request) {
-	// Parse form max size ~10MB
 	r.ParseMultipartForm(10 << 20)
 
-	// Ambil kandidat_id dari form
 	kandidatIDStr := r.FormValue("kandidat_id")
 	kandidatID, err := strconv.Atoi(kandidatIDStr)
 	if err != nil {
@@ -28,7 +36,6 @@ func UploadCV(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Ambil file dari form
 	file, header, err := r.FormFile("file")
 	if err != nil {
 		http.Error(w, "File not provided", http.StatusBadRequest)
@@ -36,16 +43,13 @@ func UploadCV(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	// Validasi format file
 	if filepath.Ext(header.Filename) != ".pdf" {
 		http.Error(w, "Only PDF files are allowed", http.StatusBadRequest)
 		return
 	}
 
-	// Simpan file ke folder
 	filename := fmt.Sprintf("cv_%d_%d.pdf", kandidatID, time.Now().Unix())
 	savePath := filepath.Join("uploads", filename)
-
 	out, err := os.Create(savePath)
 	if err != nil {
 		http.Error(w, "Failed to save file", http.StatusInternalServerError)
@@ -54,7 +58,6 @@ func UploadCV(w http.ResponseWriter, r *http.Request) {
 	defer out.Close()
 	io.Copy(out, file)
 
-	// Simpan metadata ke database
 	cv := models.CV{
 		KandidatID:    kandidatID,
 		FileName:      header.Filename,
@@ -64,61 +67,34 @@ func UploadCV(w http.ResponseWriter, r *http.Request) {
 	}
 	err = db.DB.QueryRow(
 		context.Background(),
-		`INSERT INTO CV (kandidat_id, file_name, file_path, file_type, tanggal_unggah) 
+		`INSERT INTO CV (kandidat_id, file_name, file_path, file_type, tanggal_unggah)
 		 VALUES ($1, $2, $3, $4, $5) RETURNING id`,
 		cv.KandidatID, cv.FileName, cv.FilePath, cv.FileType, cv.TanggalUnggah,
 	).Scan(&cv.ID)
-
 	if err != nil {
 		http.Error(w, "Database insert error", http.StatusInternalServerError)
 		return
 	}
 
-	// Beri response
+	// Kirim file ke FastAPI
+	parsed, err := sendPDFToFastAPI(cv.FilePath, kandidatID)
+	if err != nil {
+		http.Error(w, "Failed to parse resume with FastAPI", http.StatusInternalServerError)
+		return
+	}
+
+	// Simpan hasil parsing
+	_, err = db.DB.Exec(context.Background(), `
+		INSERT INTO Parsed_Resume (cv_id, pengalaman_kerja, keterampilan, background_kandidat)
+		VALUES ($1, $2, $3, $4)`,
+		cv.ID, parsed.PengalamanKerja, parsed.Keterampilan, parsed.BackgroundKandidat)
+	if err != nil {
+		http.Error(w, "Failed to save parsed resume", http.StatusInternalServerError)
+		return
+	}
+
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(fmt.Sprintf("CV uploaded successfully with ID %d", cv.ID)))
-}
-
-func GetCVByKandidat(w http.ResponseWriter, r *http.Request) {
-	kandidatIDStr := chi.URLParam(r, "kandidat_id")
-	kandidatID, err := strconv.Atoi(kandidatIDStr)
-	if err != nil {
-		http.Error(w, "Invalid kandidat_id", http.StatusBadRequest)
-		return
-	}
-
-	rows, err := db.DB.Query(context.Background(), `
-		SELECT id, kandidat_id, file_name, file_path, file_type, tanggal_unggah
-		FROM cv
-		WHERE kandidat_id = $1
-	`, kandidatID)
-	if err != nil {
-		http.Error(w, "Database query failed", http.StatusInternalServerError)
-		return
-	}
-	defer rows.Close()
-
-	type CV struct {
-		ID            int       `json:"id"`
-		KandidatID    int       `json:"kandidat_id"`
-		FileName      string    `json:"file_name"`
-		FilePath      string    `json:"file_path"`
-		FileType      string    `json:"file_type"`
-		TanggalUnggah time.Time `json:"tanggal_unggah"`
-	}
-
-	var cvs []CV
-	for rows.Next() {
-		var cv CV
-		if err := rows.Scan(&cv.ID, &cv.KandidatID, &cv.FileName, &cv.FilePath, &cv.FileType, &cv.TanggalUnggah); err != nil {
-			http.Error(w, "Failed to scan row", http.StatusInternalServerError)
-			return
-		}
-		cvs = append(cvs, cv)
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(cvs)
+	w.Write([]byte(fmt.Sprintf("CV uploaded and parsed successfully with CV ID %d", cv.ID)))
 }
 
 func UpdateCV(w http.ResponseWriter, r *http.Request) {
@@ -129,7 +105,6 @@ func UpdateCV(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Parse form dan ambil file baru
 	r.ParseMultipartForm(10 << 20)
 	file, header, err := r.FormFile("file")
 	if err != nil {
@@ -138,19 +113,17 @@ func UpdateCV(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	// Ambil data lama (file_path)
 	var oldPath string
+	var kandidatID int
 	err = db.DB.QueryRow(context.Background(),
-		"SELECT file_path FROM cv WHERE id = $1", cvID).Scan(&oldPath)
+		"SELECT file_path, kandidat_id FROM cv WHERE id = $1", cvID).Scan(&oldPath, &kandidatID)
 	if err != nil {
 		http.Error(w, "CV not found", http.StatusNotFound)
 		return
 	}
 
-	// Hapus file lama
 	os.Remove(oldPath)
 
-	// Simpan file baru
 	newFilename := fmt.Sprintf("cv_updated_%d_%d.pdf", cvID, time.Now().Unix())
 	newPath := filepath.Join("uploads", newFilename)
 	out, err := os.Create(newPath)
@@ -161,15 +134,125 @@ func UpdateCV(w http.ResponseWriter, r *http.Request) {
 	defer out.Close()
 	io.Copy(out, file)
 
-	// Update record di DB
 	_, err = db.DB.Exec(context.Background(),
-		`UPDATE cv SET file_name = $1, file_path = $2, tanggal_unggah = $3 WHERE id = $4`,
+		`UPDATE CV SET file_name = $1, file_path = $2, tanggal_unggah = $3 WHERE id = $4`,
 		header.Filename, newPath, time.Now(), cvID)
 	if err != nil {
 		http.Error(w, "Failed to update CV", http.StatusInternalServerError)
 		return
 	}
 
+	// Kirim file ke FastAPI
+	parsed, err := sendPDFToFastAPI(newPath, kandidatID)
+	if err != nil {
+		http.Error(w, "Failed to parse updated resume", http.StatusInternalServerError)
+		return
+	}
+
+	// Update parsed_resume
+	_, err = db.DB.Exec(context.Background(), `
+		UPDATE Parsed_Resume SET 
+			pengalaman_kerja = $1,
+			keterampilan = $2,
+			background_kandidat = $3
+		WHERE cv_id = $4`,
+		parsed.PengalamanKerja, parsed.Keterampilan, parsed.BackgroundKandidat, cvID)
+	if err != nil {
+		http.Error(w, "Failed to update parsed resume", http.StatusInternalServerError)
+		return
+	}
+
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("CV updated successfully"))
+	w.Write([]byte("CV updated and parsed resume updated successfully"))
+}
+
+// Fungsi untuk mengirim file PDF ke FastAPI dan ambil hasil parsing
+func sendPDFToFastAPI(filePath string, kandidatID int) (*ParseResponse, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("could not open PDF file: %w", err)
+	}
+	defer file.Close()
+
+	body := &bytes.Buffer{}
+	writer := io.MultiWriter(body)
+	multipart := multipartWriter(writer, file, kandidatID)
+
+	req, err := http.NewRequest("POST", "http://localhost:8000/match/parse/resume", body)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", multipart.FormDataContentType())
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var parsed ParseResponse
+	err = json.NewDecoder(resp.Body).Decode(&parsed)
+	if err != nil {
+		return nil, err
+	}
+	return &parsed, nil
+}
+
+// Helper untuk membuat multipart/form-data dengan PDF dan kandidat_id
+func multipartWriter(writer io.Writer, file *os.File, kandidatID int) *multipart.Writer {
+	mp := multipart.NewWriter(writer)
+	part, _ := mp.CreateFormFile("file", filepath.Base(file.Name()))
+	io.Copy(part, file)
+	mp.WriteField("kandidat_id", strconv.Itoa(kandidatID))
+	mp.Close()
+	return mp
+}
+
+func GetCVByKandidat(w http.ResponseWriter, r *http.Request) {
+	kandidatIDStr := chi.URLParam(r, "kandidat_id")
+	kandidatID, err := strconv.Atoi(kandidatIDStr)
+	if err != nil {
+		http.Error(w, "Invalid kandidat_id", http.StatusBadRequest)
+		return
+	}
+
+	rows, err := db.DB.Query(context.Background(),
+		`SELECT id, kandidat_id, file_name, file_path, tanggal_unggah 
+		 FROM cv 
+		 WHERE kandidat_id = $1`, kandidatID)
+	if err != nil {
+		http.Error(w, "Failed to fetch CVs", http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var cvs []map[string]interface{}
+
+	for rows.Next() {
+		var id int
+		var fileName, filePath string
+		var tanggalUnggah time.Time
+
+		if err := rows.Scan(&id, &kandidatID, &fileName, &filePath, &tanggalUnggah); err != nil {
+			http.Error(w, "Error scanning CV", http.StatusInternalServerError)
+			return
+		}
+
+		cvs = append(cvs, map[string]interface{}{
+			"id":             id,
+			"kandidat_id":    kandidatID,
+			"file_name":      fileName,
+			"file_path":      filePath,
+			"tanggal_unggah": tanggalUnggah.Format("2006-01-02 15:04:05"),
+		})
+	}
+
+	if len(cvs) == 0 {
+		http.Error(w, "No CVs found for this kandidat", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(cvs)
 }

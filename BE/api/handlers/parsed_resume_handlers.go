@@ -12,44 +12,44 @@ import (
 	"github.com/Timotius2005/InfoLoker-BE/models"
 )
 
-func SaveParsedResume(w http.ResponseWriter, r *http.Request) {
-	var input models.ParsedResumeInput
+// func SaveParsedResume(w http.ResponseWriter, r *http.Request) {
+// 	var input models.ParsedResumeInput
 
-	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
-		return
-	}
+// 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+// 		http.Error(w, "Invalid request body", http.StatusBadRequest)
+// 		return
+// 	}
 
-	// Cek apakah parsed resume sudah ada untuk cv_id ini
-	var exists bool
-	err := db.DB.QueryRow(context.Background(), `
-		SELECT EXISTS (SELECT 1 FROM parsed_resume WHERE cv_id = $1)
-	`, input.CvID).Scan(&exists)
+// 	// Cek apakah parsed resume sudah ada untuk cv_id ini
+// 	var exists bool
+// 	err := db.DB.QueryRow(context.Background(), `
+// 		SELECT EXISTS (SELECT 1 FROM parsed_resume WHERE cv_id = $1)
+// 	`, input.CvID).Scan(&exists)
 
-	if err != nil {
-		http.Error(w, "Error checking existing parsed resume", http.StatusInternalServerError)
-		return
-	}
+// 	if err != nil {
+// 		http.Error(w, "Error checking existing parsed resume", http.StatusInternalServerError)
+// 		return
+// 	}
 
-	if exists {
-		http.Error(w, "Parsed resume already exists for this CV", http.StatusConflict)
-		return
-	}
+// 	if exists {
+// 		http.Error(w, "Parsed resume already exists for this CV", http.StatusConflict)
+// 		return
+// 	}
 
-	// Simpan ke database
-	_, err = db.DB.Exec(context.Background(), `
-		INSERT INTO parsed_resume (cv_id, pengalaman_kerja, keterampilan, background_kandidat)
-		VALUES ($1, $2, $3, $4)
-	`, input.CvID, input.PengalamanKerja, input.Keterampilan, input.BackgroundKandidat)
+// 	// Simpan ke database
+// 	_, err = db.DB.Exec(context.Background(), `
+// 		INSERT INTO parsed_resume (cv_id, pengalaman_kerja, keterampilan, background_kandidat)
+// 		VALUES ($1, $2, $3, $4)
+// 	`, input.CvID, input.PengalamanKerja, input.Keterampilan, input.BackgroundKandidat)
 
-	if err != nil {
-		http.Error(w, "Failed to save parsed resume", http.StatusInternalServerError)
-		return
-	}
+// 	if err != nil {
+// 		http.Error(w, "Failed to save parsed resume", http.StatusInternalServerError)
+// 		return
+// 	}
 
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte("Parsed resume saved successfully"))
-}
+// 	w.WriteHeader(http.StatusCreated)
+// 	w.Write([]byte("Parsed resume saved successfully"))
+// }
 
 func GetParsedResumeByCVID(w http.ResponseWriter, r *http.Request) {
 	cvIDParam := chi.URLParam(r, "cv_id")
