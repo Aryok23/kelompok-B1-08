@@ -32,7 +32,7 @@ func LoadConfig() *Config {
 		DBUser:     getEnv("DB_USER", "db_user"),
 		DBPassword: getEnv("DB_PASSWORD", "db_password"),
 		DBName:     getEnv("DB_NAME", "db_name"),
-		DBSSLMode:  getEnv("DB_SSL_MODE", "disable"),
+		DBSSLMode:  getEnv("DB_SSL_MODE", "require"),
 	}
 }
 
