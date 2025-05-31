@@ -1,14 +1,43 @@
 "use client"
 
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from "next/navigation";
-import Image from 'next/image';
+import Image from 'next/image'
+import { useRouter } from "next/navigation"
+import axios from 'axios' 
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
 const Signup = () => {
-  const router = useRouter();
+  const router = useRouter()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+
+  const handleSignup = async () => {
+    setLoading(true)
+    setError("")
+    setSuccess("")
+
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/auth/register`, {
+        email,
+        password,
+        role_users: "recruiter", // otomatis sebagai kandidat
+      })
+
+      setSuccess("Pendaftaran berhasil! Silakan cek email untuk verifikasi.")
+      setTimeout(() => router.push("/login"), 2000)
+    } catch (err) {
+      const message = err.response?.data?.error || err.response?.data?.message || "Terjadi kesalahan saat mendaftar."
+      setError(message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="mb-[100px]">
       <div 
