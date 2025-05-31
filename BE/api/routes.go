@@ -12,6 +12,7 @@ func SetupRoutes() *chi.Mux {
 	r := chi.NewRouter()
 
 	r.Use(middlewares.LoggingMiddleware)
+	r.Use(middlewares.CORSMiddleware)
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Welcome to InfoLoker Backend services!"))
@@ -21,6 +22,7 @@ func SetupRoutes() *chi.Mux {
 		r.Post("/register", handlers.RegisterUser)
 		r.Post("/login", handlers.Login)
 		r.Get("/verify", handlers.VerifyEmail)
+		r.Post("/register_google", handlers.RegisterGoogleHandler)
 	})
 
 	r.Route("/api/cv", func(r chi.Router) {

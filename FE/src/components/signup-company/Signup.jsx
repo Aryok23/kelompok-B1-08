@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { useRouter } from "next/navigation";
 import Image from 'next/image';
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
+
 const Signup = () => {
   const router = useRouter();
   return (

@@ -1,13 +1,43 @@
 "use client"
-
-import React from 'react'
+import { signIn } from "next-auth/react"
+import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"
+import axios from 'axios' // ✅ Import axios
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
 const Signup = () => {
-  const router = useRouter();
+  const router = useRouter()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+
+  const handleSignup = async () => {
+    setLoading(true)
+    setError("")
+    setSuccess("")
+
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/auth/register`, {
+        email,
+        password,
+        role_users: "kandidat", // otomatis sebagai kandidat
+      })
+
+      setSuccess("Pendaftaran berhasil! Silakan cek email untuk verifikasi.")
+      setTimeout(() => router.push("/login"), 2000)
+    } catch (err) {
+      const message = err.response?.data?.error || err.response?.data?.message || "Terjadi kesalahan saat mendaftar."
+      setError(message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="mb-[100px]">
       <div 
@@ -18,44 +48,45 @@ const Signup = () => {
       <div className="flex flex-col items-center mt-[100px]">
         <div>
           <div className="flex flex-row justify-end items-end mb-[10px]">
-            <Link
-              className="font-outfit underline text-[20px]"
-              href="/company">
+            <Link className="font-outfit underline text-[20px]" href="/company">
               Anda mencari karyawan?
             </Link>
-          </div>   
-          <div className="flex flex-col justify-center items-center w-[615px] h-[606px] border-[2px] border-[#D9D9D9] rounded-[10px]">
-            <div className="font-semibold font-outfit text-[40px]">
+          </div>
+          <div className="flex flex-col justify-center items-center w-[615px] h-auto border-[2px] border-[#D9D9D9] rounded-[10px] p-[30px]">
+            <div className="font-semibold font-outfit text-[40px] mb-[16px]">
               Sign Up
             </div>
-            <div className="flex flex-col gap-y-[8px]">
-              <div className="font-semibold font-outfit text-[20px]"> 
-                Email
-              </div>
+            {error && <div className="text-red-600 font-roboto text-[16px] mb-2">{error}</div>}
+            {success && <div className="text-green-600 font-roboto text-[16px] mb-2">{success}</div>}
+            <div className="flex flex-col gap-y-[8px] w-full">
+              <label className="font-semibold font-outfit text-[20px]">Email</label>
               <input 
-                className="border-[2px] border-[#B3B3B3] rounded-[5px] w-[525px] h-[50px] font-roboto text-[#05192D] text-[20px] focus:outline-none pl-[11px] pr-[11px]"  
-                placeholder="Email" 
+                className="border-[2px] border-[#B3B3B3] rounded-[5px] h-[50px] font-roboto text-[#05192D] text-[20px] focus:outline-none px-[11px]"  
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="flex flex-col gap-y-[8px] mt-[12px]">
-              <div className="font-semibold font-outfit text-[20px]"> 
-                Password
-              </div>
+            <div className="flex flex-col gap-y-[8px] w-full mt-[12px]">
+              <label className="font-semibold font-outfit text-[20px]">Password</label>
               <input 
                 type="password"
-                className="border-[2px] border-[#B3B3B3] rounded-[5px] w-[525px] h-[50px] font-roboto text-[#05192D] text-[20px] focus:outline-none pl-[11px] pr-[11px]"  
-                placeholder="Password" 
+                className="border-[2px] border-[#B3B3B3] rounded-[5px] h-[50px] font-roboto text-[#05192D] text-[20px] focus:outline-none px-[11px]"  
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <button 
-              className="flex items-center justify-center bg-[#03FE62] border-[2px] border-[#B3B3B3] rounded-[5px] w-[525px] h-[50px] font-semibold font-outfit text-[#05192D] text-[20px] mt-[24px]"
-              onClick={() => router.push("/login")}>
-              Daftar
-            </button>           
-              <div className="text-[20px] font-roboto mt-[24px]">
-                atau
-              </div>         
-            <button className="flex items-center justify-center pl-4 gap-3 border-[2px] border-[#B3B3B3] rounded-[5px] w-[525px] h-[50px] font-semibold font-outfit text-[#05192D] text-[20px] mt-[24px]">
+              className="flex items-center justify-center bg-[#03FE62] border-[2px] border-[#B3B3B3] rounded-[5px] w-full h-[50px] font-semibold font-outfit text-[#05192D] text-[20px] mt-[24px] disabled:opacity-50"
+              onClick={handleSignup}
+              disabled={loading}>
+              {loading ? "Mendaftarkan..." : "Daftar"}
+            </button>
+            <div className="text-[20px] font-roboto mt-[24px]">atau</div>
+            <button 
+              className="flex items-center justify-center pl-4 gap-3 border-[2px] border-[#B3B3B3] rounded-[5px] w-full h-[50px] font-semibold font-outfit text-[#05192D] text-[20px] mt-[24px]"
+              onClick={() => signIn("google")}>
               <div className="w-[24px] h-[24px] relative">
                 <Image src="/logo_google.png" alt="Google logo" fill className="object-contain" />
               </div>
