@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"database/sql"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -184,4 +185,47 @@ func AuthRoutes() *chi.Mux {
 	r.Get("/verify", VerifyEmail)
 
 	return r
+}
+
+type RegisterGoogleRequest struct {
+	Email         string `json:"email"`
+	Nama          string `json:"nama"`
+	OauthID       string `json:"oauth_id"`
+	OauthProvider string `json:"oauth_provider"`
+	RoleUsers     string `json:"role_users"`
+}
+
+func RegisterGoogleHandler(w http.ResponseWriter, r *http.Request) {
+	var req RegisterGoogleRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Cek apakah user sudah ada berdasarkan email atau oauth_id
+	var existingID string
+	err := db.DB.QueryRow(r.Context(), `
+		SELECT id FROM Users 
+		WHERE email = $1 OR oauth_id = $2
+	`, req.Email, req.OauthID).Scan(&existingID)
+
+	if err != nil && err != sql.ErrNoRows {
+		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
+	}
+
+	if err == sql.ErrNoRows {
+		// Insert user baru
+		_, err = db.DB.Exec(r.Context(), `
+			INSERT INTO Users (email, nama, oauth_id, oauth_provider, role_users)
+			VALUES ($1, $2, $3, $4, $5)
+		`, req.Email, req.Nama, req.OauthID, req.OauthProvider, req.RoleUsers)
+
+		if err != nil {
+			http.Error(w, "Failed to insert user", http.StatusInternalServerError)
+			return
+		}
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
