@@ -25,7 +25,7 @@ const Signup = () => {
       const response = await axios.post(`${BACKEND_URL}/api/auth/register`, {
         email,
         password,
-        role_users: "kandidat", // otomatis sebagai kandidat
+        role_users: "kandidat", 
       })
 
       setSuccess("Pendaftaran berhasil! Silakan cek email untuk verifikasi.")
