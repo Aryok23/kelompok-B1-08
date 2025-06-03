@@ -31,7 +31,9 @@ const Foryou = () => {
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
-
+    const handleClick = () => {
+    router.push(`/dashboard-applicant/detail-loker/${id}`);
+  };
   return (
     <div className="min-h-[1350px] w-[600px] pt-[150px] pb-[150px]">
       {/* Header */}

@@ -1,8 +1,12 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import { useRouter } from 'next/navigation';
 const Lowongan = ({ id, title, company, location, posted }) => {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push(`/dashboard/lowongan/${id}`);
+  };
   const renderIcon = () => {
     if (iconType === 'saved') {
       return (
@@ -22,7 +26,9 @@ const Lowongan = ({ id, title, company, location, posted }) => {
   
 
   return (
-    <div className="border border-gray-300 rounded-lg p-4 w-full flex justify-between items-start">
+    <div 
+     onClick={handleClick}
+    className="border border-gray-300 rounded-lg p-4 w-full flex justify-between items-start">
       <div>
         <Link
         href={`/dashboard/lowongan/${id-1}`}

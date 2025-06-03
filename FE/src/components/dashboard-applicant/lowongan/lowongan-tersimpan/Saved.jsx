@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import Lowongan from '@/components/dashboard-applicant/lowongan/lowongan-card/Lowongan';
 import jobData from '@/data/jobSave';

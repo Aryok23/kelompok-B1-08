@@ -16,6 +16,7 @@ const fetchJobData = async () => {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
+      description: job.description
     }
   )
     }));
