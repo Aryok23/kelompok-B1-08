@@ -38,7 +38,14 @@ func CreateJob(w http.ResponseWriter, r *http.Request) {
 // GetAllJobs retrieves all job postings
 func GetAllJobs(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.DB.Query(context.Background(), `
-		SELECT id, recruiter_id, nama_pekerjaan, deskripsi_pekerjaan, tanggal_posting FROM Jobs
+		SELECT 
+			j.id,
+			j.nama_pekerjaan,
+			j.deskripsi_pekerjaan,
+			j.tanggal_posting,
+			r.perusahaan
+		FROM jobs j
+		JOIN recruiter r ON j.recruiter_id = r.id
 	`)
 	if err != nil {
 		http.Error(w, "Failed to retrieve jobs", http.StatusInternalServerError)
@@ -46,10 +53,25 @@ func GetAllJobs(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	var jobs []models.Job
+	// Struct untuk response (bisa beda dari models.Job jika perlu tambahan nama perusahaan)
+	type JobResponse struct {
+		ID             int       `json:"id"`
+		NamaPekerjaan  string    `json:"title"`
+		Deskripsi      string    `json:"description"`
+		TanggalPosting time.Time `json:"posted"`
+		NamaPerusahaan string    `json:"company"`
+	}
+
+	var jobs []JobResponse
 	for rows.Next() {
-		var job models.Job
-		if err := rows.Scan(&job.ID, &job.RecruiterID, &job.NamaPekerjaan, &job.DeskripsiPekerjaan, &job.TanggalPosting); err != nil {
+		var job JobResponse
+		if err := rows.Scan(
+			&job.ID,
+			&job.NamaPekerjaan,
+			&job.Deskripsi,
+			&job.TanggalPosting,
+			&job.NamaPerusahaan,
+		); err != nil {
 			http.Error(w, "Error scanning job", http.StatusInternalServerError)
 			return
 		}

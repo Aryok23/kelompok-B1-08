@@ -37,7 +37,7 @@ func SetupRoutes() *chi.Mux {
 		r.Put("/{cv_id}", handlers.UpdateParsedResume)    // PUT /api/parsed_resume/{cv_id}
 	})
 	r.Route("/api/jobs", func(r chi.Router) {
-		r.Post("/", handlers.CreateJob)           // POST /api/jobs
+		r.Post("/create", handlers.CreateJob)     // POST /api/jobs
 		r.Get("/", handlers.GetAllJobs)           // GET /api/jobs
 		r.Get("/{job_id}", handlers.GetJobByID)   // GET /api/jobs/{job_id}
 		r.Put("/{job_id}", handlers.UpdateJob)    // PUT /api/jobs/{job_id}
