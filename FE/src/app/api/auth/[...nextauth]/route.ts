@@ -1,6 +1,6 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
-const BACKEND_URL = process.env.BACKEND_URL 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 const handler = NextAuth({
   providers: [
     GoogleProvider({

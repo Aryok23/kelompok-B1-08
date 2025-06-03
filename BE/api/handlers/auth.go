@@ -218,7 +218,7 @@ func RegisterGoogleHandler(w http.ResponseWriter, r *http.Request) {
 		// Insert user baru
 		_, err = db.DB.Exec(r.Context(), `
 			INSERT INTO Users (email, nama, oauth_id, oauth_provider, role_users)
-			VALUES ($1, $2, $3, $4, $5)
+			VALUES ($1, $2, $3, $4, $5, '')
 		`, req.Email, req.Nama, req.OauthID, req.OauthProvider, req.RoleUsers)
 
 		if err != nil {
