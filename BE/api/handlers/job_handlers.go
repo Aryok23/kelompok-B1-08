@@ -91,10 +91,33 @@ func GetJobByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var job models.Job
+	// Struct respons disesuaikan seperti pada GetAllJobs
+	type JobResponse struct {
+		ID             int       `json:"id"`
+		NamaPekerjaan  string    `json:"title"`
+		Deskripsi      string    `json:"description"`
+		TanggalPosting time.Time `json:"posted"`
+		NamaPerusahaan string    `json:"company"`
+	}
+
+	var job JobResponse
 	err = db.DB.QueryRow(context.Background(), `
-		SELECT id, recruiter_id, nama_pekerjaan, deskripsi_pekerjaan, tanggal_posting FROM Jobs WHERE id = $1
-	`, jobID).Scan(&job.ID, &job.RecruiterID, &job.NamaPekerjaan, &job.DeskripsiPekerjaan, &job.TanggalPosting)
+		SELECT 
+			j.id,
+			j.nama_pekerjaan,
+			j.deskripsi_pekerjaan,
+			j.tanggal_posting,
+			r.perusahaan
+		FROM jobs j
+		JOIN recruiter r ON j.recruiter_id = r.id
+		WHERE j.id = $1
+	`, jobID).Scan(
+		&job.ID,
+		&job.NamaPekerjaan,
+		&job.Deskripsi,
+		&job.TanggalPosting,
+		&job.NamaPerusahaan,
+	)
 
 	if err != nil {
 		http.Error(w, "Job not found", http.StatusNotFound)

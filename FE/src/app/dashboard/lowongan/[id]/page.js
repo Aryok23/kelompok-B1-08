@@ -1,5 +1,5 @@
 import React from 'react';
-import DetailLoker from '@/components/dashboard-applicant/lowongan/detail/DetailLoker';
+import DetailLoker from '@/components/dashboard-applicant/lowongan/detail/page';
 import Navbar from '@/components/dashboard-applicant/navbar/Navbar';
 
 const Page = () => {
